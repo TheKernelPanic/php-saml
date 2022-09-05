@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  onelogin_php_saml:
+    build: .
+    image: onelogin_php_saml:latest
+    container_name: onelogin_php_saml
+    volumes:
+      - "../:/var/www/html"
+    tty: true
+    ports:
+      - "80:80"
