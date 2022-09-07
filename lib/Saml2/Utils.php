@@ -314,7 +314,7 @@ class OneLogin_Saml2_Utils
 
         /**
          * Verify that the URL matches the regex for the protocol.
-         * By default this will check for http and https
+         * By default, this will check for http and https
          */
         $wrongProtocol = !preg_match(self::$_protocolRegex, $url);
         $url = filter_var($url, FILTER_VALIDATE_URL);
@@ -336,9 +336,9 @@ class OneLogin_Saml2_Utils
             if ($value === null) {
                 $param = urlencode($name);
             } else if (is_array($value)) {
-                $param = "";
+                $param = '';
                 foreach ($value as $val) {
-                    $param .= urlencode($name) . "[]=" . urlencode($val). '&';
+                    $param .= urlencode($name) . '[]=' . urlencode($val). '&';
                 }
                 if (!empty($param)) {
                     $param = substr($param, 0, -1);

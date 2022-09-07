@@ -29,12 +29,12 @@ class OneLogin_Saml2_AuthnRequest
      * Constructs the AuthnRequest object.
      *
      * @param OneLogin_Saml2_Settings $settings Settings
-     * @param bool   $forceAuthn When true the AuthNReuqest will set the ForceAuthn='true'
-     * @param bool   $isPassive When true the AuthNReuqest will set the Ispassive='true'
-     * @param bool   $setNameIdPolicy When true the AuthNReuqest will set a nameIdPolicy
-     * @param string $nameIdValueReq Indicates to the IdP the subject that should be authenticated
+     * @param bool $forceAuthn When true the AuthNReuqest will set the ForceAuthn='true'
+     * @param bool $isPassive When true the AuthNReuqest will set the Ispassive='true'
+     * @param bool $setNameIdPolicy When true the AuthNReuqest will set a nameIdPolicy
+     * @param string|null $nameIdValueReq Indicates to the IdP the subject that should be authenticated
      */
-    public function __construct(OneLogin_Saml2_Settings $settings, $forceAuthn = false, $isPassive = false, $setNameIdPolicy = true, $nameIdValueReq = null)
+    public function __construct(OneLogin_Saml2_Settings $settings, bool $forceAuthn = false, bool $isPassive = false, bool $setNameIdPolicy = true, ?string $nameIdValueReq = null)
     {
         $this->_settings = $settings;
 
@@ -44,7 +44,7 @@ class OneLogin_Saml2_AuthnRequest
         $id = OneLogin_Saml2_Utils::generateUniqueID();
         $issueInstant = OneLogin_Saml2_Utils::parseTime2SAML(time());
 
-        $subjectStr = "";
+        $subjectStr = '';
         if (isset($nameIdValueReq)) {
             $subjectStr = <<<SUBJECT
 
@@ -154,26 +154,22 @@ AUTHNREQUEST;
     }
 
     /**
-     * Returns deflated, base64 encoded, unsigned AuthnRequest.
+     * @desc Returns deflated, base64 encoded, unsigned AuthnRequest.
      *
      * @param bool|null $deflate Whether or not we should 'gzdeflate' the request body before we return it.
-     *
      * @return string
      */
-    public function getRequest($deflate = null)
+    public function getRequest(?bool $deflate = null): string
     {
         $subject = $this->_authnRequest;
 
         if (is_null($deflate)) {
             $deflate = $this->_settings->shouldCompressRequests();
         }
-
         if ($deflate) {
             $subject = gzdeflate($this->_authnRequest);
         }
-
-        $base64Request = base64_encode($subject);
-        return $base64Request;
+        return base64_encode($subject);
     }
 
     /**
